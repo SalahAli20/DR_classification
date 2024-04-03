@@ -54,7 +54,7 @@ if __name__ == '__main__':
         torch.save(trained_model.state_dict(),'{}/model_weights.pth'.format(output_folder))
 
         plot_metrics(epochs,losses,accuracies, precisions, recalls, f1_scores,'{}/val_metrics.png'.format(output_folder))
-        plot_loss((epochs, losses,'{}/loss.png'.format(output_folder)))
+        # plot_loss((epochs, losses,'{}/loss.png'.format(output_folder)))
 
     elif args.mode == "test":
          overall_accuracy, precision, recall, f1=inference(model,csv_file,root_dir)
