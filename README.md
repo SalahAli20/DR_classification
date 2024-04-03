@@ -19,8 +19,8 @@ python main.py --input_CSV ${csv_path} --input_folder ${root_dir} --output_folde
 
 ```
 # Installation
-1. Clone the repository: `git clone  https://github.com/SalahAli2018/SH.git`
-2. Navigate to the repository directory: `cd SH`
+1. Clone the repository: `git clone  https://github.com/SalahAli2018/DR_classification.git`
+2. Navigate to the repository directory: `cd DR_classification`
 3. Install the package: `pip install .`
 4. Or use docker 
   build container
