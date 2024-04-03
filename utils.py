@@ -115,7 +115,7 @@ def plot_metrics(epochs,losses,accuracies, precisions, recalls, f1_scores,output
     plt.savefig(output)
 
 
-def plot_loss(epochs, losses):
+def plot_loss(epochs, losses,output):
     plt.figure(figsize=(12, 5))
     plt.subplot(1, 2, 1)
     plt.plot(epochs, losses, label='Loss', color='blue')
