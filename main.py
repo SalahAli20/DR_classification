@@ -53,7 +53,7 @@ if __name__ == '__main__':
         trained_model, losses, epochs, accuracies, precisions, recalls, f1_scores=train_model(model, train_loader, val_loader, criterion, optimizer, scheduler, num_epochs= model_config.epochs, device=device)
         torch.save(trained_model.state_dict(),'{}/model_weights.pth'.format(output_folder))
 
-        plot_metrics(epochs,accuracies, precisions, recalls, f1_scores,'{}/val_metrics.png'.format(output_folder))
+        plot_metrics(epochs,losses,accuracies, precisions, recalls, f1_scores,'{}/val_metrics.png'.format(output_folder))
         plot_loss((epochs, losses,'{}/loss.png'.format(output_folder)))
 
     elif args.mode == "test":
