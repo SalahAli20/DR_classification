@@ -1,6 +1,5 @@
 torch
 torchvision
-torchtext  # Add if you're using text data
 pandas
 numpy
 scikit-learn
