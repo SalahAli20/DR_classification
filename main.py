@@ -58,6 +58,6 @@ if __name__ == '__main__':
 
     elif args.mode == "test":
          overall_accuracy, precision, recall, f1=inference(model,csv_file,root_dir)
-        print(f'Accuracy: {overall_accuracy:.4f}, Precision: {precision:.4f}, Recall: {recall:.4f}, F1 Score: {f1:.4f}')
+         print(f'Accuracy: {overall_accuracy:.4f}, Precision: {precision:.4f}, Recall: {recall:.4f}, F1 Score: {f1:.4f}')
 
        
