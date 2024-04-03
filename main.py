@@ -46,7 +46,7 @@ if __name__ == '__main__':
     if args.mode == "train":
         train_loader, test_loader, val_loader = create_dataloaders(csv_path,root_dir, output=output_folder,batch_size=model_config.batch_size,transform=None)
         train_data=pd.read_csv('{}/training.csv'.format(output_folder)) 
-        model = ModelFactory.create_model(args.model, num_classes=5, num_layers_to_retrain=model_config.trainable_layers)
+        model = ModelFactory.create_model(args.model, num_classes=5, num_layers_to_retrain=model_config.num_layers_to_retrain)
         optimizer = torch.optim.SGD(model.parameters(), lr= model_config.learning_rate)    
         criterion = nn.CrossEntropyLoss()
         scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.1, patience=3, verbose=True)
