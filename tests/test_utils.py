@@ -2,7 +2,7 @@ import unittest
 import torch
 from torchvision import datasets
 from torch.utils.data import DataLoader
-from utils import inference, train_model,plot_loss_and_metrics
+from utils import inference, train_model,plot_metrics,plot_loss
 
 class TestUtils(unittest.TestCase):
     
@@ -10,7 +10,9 @@ class TestUtils(unittest.TestCase):
         pass
     def test_train_model(self):
         pass    
-    def test_plot_loss_and_metrics(self):
+    def test_plot_metrics(self):
+        pass
+    def test_plot_loss(self):
         pass
 
 
