@@ -88,7 +88,7 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, scheduler
         
     return model, losses, epochs, accuracies, precisions, recalls, f1_scores
 
-def plot_metrics(epochs,accuracies, precisions, recalls, f1_scores,output):
+def plot_metrics(epochs,losses,accuracies, precisions, recalls, f1_scores,output):
     plt.figure(figsize=(12, 5))
     
     # Plot Loss
