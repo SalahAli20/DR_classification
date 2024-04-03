@@ -8,7 +8,6 @@ This Python script models.py implements a factory design pattern for using diffe
 - `DensNet`
 - `MyModel`
 
-Each model is a PyTorch `nn.Module` and has a `predict()` method for making predictions on input data.
 
 
 # How to Use
@@ -34,5 +33,5 @@ python main.py --input_CSV ${csv_path} --input_folder ${root_dir} --output_folde
   ```
 # Limitations
 
-* It doesn't have many pre-processing functions
+* It doesn't output accurate predications, but it's a good starting point
 * it only has two models, but it's modular, and we can easily add any model as a class in `models.py`
