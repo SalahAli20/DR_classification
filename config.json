@@ -1,0 +1,6 @@
+{
+    "learning_rate": 0.001,
+    "batch_size": 32,
+    "num_layers_to_retrain',": 5,
+    "epochs": 10
+}
