@@ -50,7 +50,7 @@ if __name__ == '__main__':
         optimizer = torch.optim.SGD(model.parameters(), lr= model_config.learning_rate)    
         criterion = nn.CrossEntropyLoss()
         scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.1, patience=3, verbose=True)
-        trained_model, losses, epochs, accuracies, precisions, recalls, f1_scores=train_model(model, train_loader, val_loader, criterion, optimizer, scheduler, num_epochs= model_config.epochs), device=device)
+        trained_model, losses, epochs, accuracies, precisions, recalls, f1_scores=train_model(model, train_loader, val_loader, criterion, optimizer, scheduler, num_epochs= model_config.epochs, device=device)
         torch.save(trained_model.state_dict(),'{}/model_weights.pth'.format(output_folder))
 
         plot_metrics(epochs,accuracies, precisions, recalls, f1_scores,'{}/val_metrics.png'.format(output_folder))
