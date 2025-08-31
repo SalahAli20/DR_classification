@@ -8,10 +8,43 @@ from models import ModelFactory
 from utils import train_model,plot_metrics,plot_loss
 from datasets import create_dataloaders
 from config import ModelConfig
-from utils import ModelPyFunc
-
+# from utils import ModelPyFunc
+from pathlib import Path
 import argparse
 import os
+
+import mlflow.pyfunc
+
+# class ModelPyFunc(mlflow.pyfunc.PythonModel):
+#     def __init__(self, trained_model):
+#         self.trained_model = trained_model
+#         self.trained_model.eval()
+
+#     def predict(self, context, model_input):
+#         """
+#         model_input: numpy array of shape (batch, channels, H, W)
+#         Returns softmax probabilities
+#         """
+#         with torch.no_grad():
+#             x = torch.tensor(model_input, dtype=torch.float32)
+#             logits = self.trained_model(x)
+#             probs = torch.nn.functional.softmax(logits, dim=1).numpy()
+#         return probs
+
+
+class ModelPyFunc(mlflow.pyfunc.PythonModel):
+    def load_context(self, context):
+        self.model = trained_model
+        self.model.load_state_dict(torch.load(Path(context.artifacts["weights"]), map_location="cpu"))
+        self.model.eval()
+
+    def predict(self, context, model_input):
+        x = torch.tensor(model_input, dtype=torch.float32)
+        with torch.no_grad():
+            logits = self.model(x)
+            return torch.nn.functional.softmax(logits, dim=1).numpy()
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='DR classification models')    
@@ -54,10 +87,18 @@ if __name__ == '__main__':
         trained_model, losses, epochs, accuracies, precisions, recalls, f1_scores=train_model(model, train_loader, val_loader, criterion, optimizer, scheduler, num_epochs= model_config.epochs, device=device)
         torch.save(trained_model.state_dict(),'{}/model_weights.pth'.format(output_folder))
         with mlflow.start_run():
+            # mlflow.pyfunc.log_model(
+            #     artifact_path="dr_classifier",
+            #     python_model=ModelPyFunc(trained_model)
+            # )
             mlflow.pyfunc.log_model(
                 artifact_path="dr_classifier",
-                python_model=ModelPyFunc(trained_model)
+                python_model=ModelPyFunc(),
+                artifacts={"weights": '{}/model_weights.pth'.format(output_folder)}
             )
+
+
+
 
         plot_metrics(epochs,losses,accuracies, precisions, recalls, f1_scores,'{}/val_metrics.png'.format(output_folder))
         # plot_loss((epochs, losses,'{}/loss.png'.format(output_folder)))
