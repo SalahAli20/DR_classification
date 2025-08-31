@@ -6,6 +6,25 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, confu
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+import mlflow.pyfunc
+
+class ModelPyFunc(mlflow.pyfunc.PythonModel):
+    def __init__(self, trained_model):
+        self.trained_model = trained_model
+        self.trained_model.eval()
+
+    def predict(self, context, model_input):
+        """
+        model_input: numpy array of shape (batch, channels, H, W)
+        Returns softmax probabilities
+        """
+        with torch.no_grad():
+            x = torch.tensor(model_input, dtype=torch.float32)
+            logits = self.trained_model(x)
+            probs = torch.nn.functional.softmax(logits, dim=1).numpy()
+        return probs
+
+
 def inference(model,csv_file,root_dir):
     test_subset = MessidorDataset(csv_path, root_dir, transform=None)
     test_loader = DataLoader(test_subset, batch_size=1, shuffle=False)
