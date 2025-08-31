@@ -2,12 +2,13 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import torchvision.transforms as transforms
-
+import mlflow.pyfunc
 import pandas as pd
 from models import ModelFactory
 from utils import train_model,plot_metrics,plot_loss
 from datasets import create_dataloaders
 from config import ModelConfig
+from utils import ModelPyFunc
 
 import argparse
 import os
@@ -49,9 +50,14 @@ if __name__ == '__main__':
         model = ModelFactory.create_model(args.model, num_classes=5, num_layers_to_retrain=model_config.num_layers_to_retrain)
         optimizer = torch.optim.SGD(model.parameters(), lr= model_config.learning_rate)    
         criterion = nn.CrossEntropyLoss()
-        scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.1, patience=3, verbose=True)
+        scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.1, patience=3)
         trained_model, losses, epochs, accuracies, precisions, recalls, f1_scores=train_model(model, train_loader, val_loader, criterion, optimizer, scheduler, num_epochs= model_config.epochs, device=device)
         torch.save(trained_model.state_dict(),'{}/model_weights.pth'.format(output_folder))
+        with mlflow.start_run():
+            mlflow.pyfunc.log_model(
+                artifact_path="dr_classifier",
+                python_model=ModelPyFunc(trained_model)
+            )
 
         plot_metrics(epochs,losses,accuracies, precisions, recalls, f1_scores,'{}/val_metrics.png'.format(output_folder))
         # plot_loss((epochs, losses,'{}/loss.png'.format(output_folder)))
