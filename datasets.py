@@ -53,7 +53,7 @@ class MessidorDataset(Dataset):
 
         try:
             with Image.open(filepath) as img:
-                image = img.resize((256,256), Image.ANTIALIAS)
+                image = img.resize((256,256))
                 image = image.convert("RGB")  # Convert to RGB if needed
                 image = np.array(image)
                 image = np.transpose(image, (2, 0, 1))
